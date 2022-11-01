@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    //インスタンス定義
+    public static PlayerController instance = null;
+
     Rigidbody2D rbody; //Rigidbody2D型の変数
     float axisH = 0.0f; //入力
     public float speed = 3.0f; //移動速度
 
-    public float jump = 9.0f; //ジャンプ力
+    public float jump = 4.5f; //ジャンプ力
     public LayerMask groundLayer; //着地できるレイヤー
     bool goJump = false; //ジャンプ開始フラグ
     bool onGround = false; //地面に立っているフラグ
@@ -27,6 +30,20 @@ public class PlayerController : MonoBehaviour
 
     public int score = 0; //スコア
 
+    //ダウンフラグ
+    public bool isDown = false;
+
+    //点滅追加
+    private bool isContinue = false; 
+    private float continueTime = 0.0f;
+    private float blinkTime = 0.0f; 
+    private SpriteRenderer sr = null;
+
+    //残機取得
+    [Header("現在の残機")] public int heartNum;
+    [Header("デフォルトの残機")] public int defaultHeartNum;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,6 +54,9 @@ public class PlayerController : MonoBehaviour
         nowAnime = stopAnime;
         oldAnime = stopAnime;
         gameState = "playing"; //ゲーム中にする
+
+        //インスタンス確保
+        sr = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -66,6 +86,41 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump"))
         {
             Jump(); //ジャンプ
+        }
+
+        //コンティニュー処理
+        if (isContinue)
+        {
+            //明滅　ついている時に戻る
+            if(blinkTime > 0.2f)
+            {
+                sr.enabled = true;
+                blinkTime = 0.0f;
+            }
+            //明滅　消えているとき
+            else if (blinkTime > 0.1f)
+            {
+                sr.enabled = false;
+            }
+            //明滅　ついているとき
+            else
+            {
+                sr.enabled = true;
+            }
+
+            //1秒たったら明滅終わり
+            if(continueTime > 1.0f)
+            {
+                isContinue = false;
+                blinkTime = 0f;
+                continueTime = 0f;
+                sr.enabled = true;
+            }
+            else
+            {
+                blinkTime += Time.deltaTime;
+                continueTime += Time.deltaTime;
+            }
         }
 
     }
@@ -118,7 +173,13 @@ public class PlayerController : MonoBehaviour
             oldAnime = nowAnime;
             animator.Play(nowAnime); //アニメーション再生
         }
-       
+
+        if (isDown)
+        {
+            nowAnime = deadAnime;
+            oldAnime = nowAnime;
+        }
+
     }
     //ジャンプ
     public void Jump()
@@ -134,9 +195,9 @@ public class PlayerController : MonoBehaviour
         {
             Goal(); //ゴール
         }
-        else if (collision.gameObject.tag == "Dead")
+        else if (collision.gameObject.tag == "Dead")//残機ある状態でdeadに触れる
         {
-            GameOver(); //ゲームオーバー
+            SubHeartNum();
         }
         else if (collision.gameObject.tag == "ScoreItem")
         {
@@ -181,4 +242,81 @@ public class PlayerController : MonoBehaviour
         //速度を0にして強制停止
         rbody.velocity = new Vector2(0, 0);
     }
+
+    //ディレイ用コルーチン
+    public IEnumerator time() 
+    {
+        //終わるまで待ってほしい処理を書く
+        //例：敵が倒れるアニメーションを開始
+        //2秒待つ
+        yield return new WaitForSeconds(1.0f);
+        //再開してから実行したい処理を書く
+        //例：敵オブジェクトを破壊
+        isDown = true;
+    } 
+
+   
+    /// コンティニュー待機状態か
+    public bool IsContinueWaiting()
+    {
+        return IsDownAnimEnd();
+    }
+
+    //ダウンアニメーションが完了しているかどうか**未実装
+    private bool IsDownAnimEnd()
+    {
+        if(isDown)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// コンティニューする
+    /// </summary>
+    public void ContinuePlayer()
+    {
+        isDown = false;
+        nowAnime = stopAnime;
+        GetComponent<CapsuleCollider2D>().enabled = true;
+        isContinue = true;
+        gameState = "playing";
+    }
+
+
+     //残機関連
+    /// 残機を１つ増やす
+    public void AddHeartNum()
+    {
+        if(heartNum < 99)
+        {
+            ++heartNum;
+        }
+    }
+     
+    /// 残機を１つ減らす
+    public void SubHeartNum()
+    {
+        if(heartNum > 0)
+        {
+            --heartNum;
+            GameStop();
+            //プレイヤー当たり判定を消す
+            GetComponent<CapsuleCollider2D>().enabled = false;
+            //プレイヤーを上に少し跳ね上げる演出
+            rbody.AddForce(new Vector2(0, 5), ForceMode2D.Impulse);
+            animator.Play(deadAnime);
+            gameState = "down";
+            StartCoroutine(time());
+        }
+        else
+        {
+            GameOver(); //ゲームオーバーにする
+        }
+    
+        
+    }
 }
+
+

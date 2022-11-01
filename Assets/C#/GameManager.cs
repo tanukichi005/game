@@ -5,6 +5,9 @@ using UnityEngine.UI; //UIを使うのに必要
 
 public class GameManager : MonoBehaviour
 {
+    //インスタンス定義
+    public static GameManager instance = null;
+
     public GameObject mainImage; //画像を持つGameObject
     public Sprite gameOverSpr; //GAME OVER画像
     public Sprite gameClearSpr; //GAME CLEAR画像
@@ -28,6 +31,16 @@ public class GameManager : MonoBehaviour
     public AudioClip meGameOver; //ゲームオーバー
     public AudioClip meGameClear; // ゲームクリア
     // Start is called before the first frame update
+
+    // +++ 残機追加 +++
+    public static int totalextend; 
+    public GameObject extendimage;
+
+    //ステージ番号，復帰位置，残機追加
+    [Header("現在のステージ")] public int stageNum;
+    [Header("現在の復帰位置")] public int continueNum;
+
+        
     void Start()
     {
         //画像を非表示にする
@@ -48,6 +61,9 @@ public class GameManager : MonoBehaviour
 
         // +++ スコア追加 +++
         UpdateScore();
+
+        // +++ 残機追加 +++
+        UpdateExtend();
     }
 
     // Update is called once per frame
@@ -159,6 +175,8 @@ public class GameManager : MonoBehaviour
     void UpdateScore()
     {
         int score = stageScore + totalScore;
-        scoreText.GetComponent<Text>().text = score.ToString();
+        scoreText.GetComponent<Text>().text = score.ToString();    
     }
+
+
 }
