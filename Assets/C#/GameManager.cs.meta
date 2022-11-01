@@ -3,7 +3,18 @@ guid: 51769f3a5d384264f8ff24ed59cd5b3f
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - mainImage: {instanceID: 0}
+  - gameOverSpr: {instanceID: 0}
+  - gameClearSpr: {instanceID: 0}
+  - panel: {instanceID: 0}
+  - restartButton: {instanceID: 0}
+  - nextButton: {instanceID: 0}
+  - timeBar: {instanceID: 0}
+  - timeText: {instanceID: 0}
+  - scoreText: {instanceID: 0}
+  - meGameOver: {instanceID: 0}
+  - meGameClear: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

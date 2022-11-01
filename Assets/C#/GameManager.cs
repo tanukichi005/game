@@ -24,6 +24,9 @@ public class GameManager : MonoBehaviour
     public static int totalScore; //合計スコア
     public int stageScore = 0; //ステージスコア
 
+    // +++ サウンド追加 +++
+    public AudioClip meGameOver; //ゲームオーバー
+    public AudioClip meGameClear; // ゲームクリア
     // Start is called before the first frame update
     void Start()
     {
@@ -52,7 +55,7 @@ public class GameManager : MonoBehaviour
     {
         if (PlayerController.gameState == "gameclear")
         {
-            //GAMEクリア
+            //ゲームクリア
             mainImage.SetActive(true); //画像を表示する
             panel.SetActive(true); //ボタン(パネル)を表示する
             //RESTARTボタンを無効化する
@@ -75,6 +78,16 @@ public class GameManager : MonoBehaviour
             totalScore += stageScore;
             stageScore = 0;
             UpdateScore();// スコア更新
+
+            // +++ サウンド追加 +++
+            // サウンド再生
+            AudioSource soundPlayer = GetComponent<AudioSource>();
+            if (soundPlayer != null)
+            {
+                //BGM停止
+                soundPlayer.Stop();
+                soundPlayer.PlayOneShot(meGameClear);
+            }
         }
         else if (PlayerController.gameState == "gameover")
         {
@@ -91,6 +104,16 @@ public class GameManager : MonoBehaviour
             if(timeCnt != null)
             {
                 timeCnt.isTimeOver = true; //時間カウント停止
+            }
+
+            // +++ サウンド再生追加 +++
+            // サウンド再生
+            AudioSource soundPlayer = GetComponent<AudioSource>();
+            if (soundPlayer != null)
+            {
+                //BGM停止
+                soundPlayer.Stop();
+                soundPlayer.PlayOneShot(meGameOver);
             }
         }
         else if (PlayerController.gameState == "playing")
