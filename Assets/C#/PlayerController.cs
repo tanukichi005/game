@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     public static string gameState = "playing"; //GAMEの状態
 
     public int score = 0; //スコア
+    public int extendscore = 0; //Extend用スコア
 
     //ダウンフラグ
     public bool isDown = false;
@@ -38,6 +39,9 @@ public class PlayerController : MonoBehaviour
     private float continueTime = 0.0f;
     private float blinkTime = 0.0f; 
     private SpriteRenderer sr = null;
+
+    //残機フラグ
+        public bool isUpdateHeart = false;
 
     //残機取得
     [Header("現在の残機")] public int heartNum;
@@ -206,6 +210,15 @@ public class PlayerController : MonoBehaviour
             ItemData item = collision.gameObject.GetComponent<ItemData>();
             //スコアを得る
             score = item.value;
+            extendscore += score;
+
+            //Extend処理
+            if(extendscore >= 10000)
+            {
+                AddHeartNum();
+                extendscore = 0;
+                isUpdateHeart = true;
+            }
 
             //アイテムを削除する
             Destroy(collision.gameObject);
@@ -292,6 +305,7 @@ public class PlayerController : MonoBehaviour
         if(heartNum < 99)
         {
             ++heartNum;
+            isUpdateHeart = true;
         }
     }
      
@@ -301,6 +315,7 @@ public class PlayerController : MonoBehaviour
         if(heartNum > 0)
         {
             --heartNum;
+            isUpdateHeart = true;
             GameStop();
             //プレイヤー当たり判定を消す
             GetComponent<CapsuleCollider2D>().enabled = false;

@@ -5,8 +5,10 @@ using UnityEngine.SceneManagement; //シーンの切り替えに必要
 
 public class ChangeScene : MonoBehaviour
 {
+    [Header("フェード")] public FadeController fade;
 
     public string sceneName; //読み込むシーン名
+
     // Start is called before the first frame update
     void Start()
     {
@@ -16,12 +18,22 @@ public class ChangeScene : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(fade.IsFadeOutComplete())
+        {
+            Load();
+        }
     }
 
-    //シーンを読み込む
+    //フェードさせる
+    public void Fade()
+    {
+        fade.StartFadeOut();
+    }
+
+    //ロードする
     public void Load()
     {
         SceneManager.LoadScene(sceneName);
     }
 }
+    

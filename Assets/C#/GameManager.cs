@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public GameObject panel; //パネル
     public GameObject restartButton; //RESTARTボタン
     public GameObject nextButton; //NEXTボタン
+    public GameObject black; //薄暗くするようの画像
 
     Image titleImage; //画像を表示しているImageコンポーネント
 
@@ -33,8 +34,9 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
 
     // +++ 残機追加 +++
-    public static int totalextend; 
-    public GameObject extendimage;
+    public static int totalheart; 
+    public GameObject hearttext;
+    public int heartNum = 0;
 
     //ステージ番号，復帰位置，残機追加
     [Header("現在のステージ")] public int stageNum;
@@ -63,7 +65,10 @@ public class GameManager : MonoBehaviour
         UpdateScore();
 
         // +++ 残機追加 +++
-        UpdateExtend();
+        UpdateHeart();
+
+        //薄暗くする画像を非表示に
+        black.SetActive(false);
     }
 
     // Update is called once per frame
@@ -78,6 +83,7 @@ public class GameManager : MonoBehaviour
             Button bt = restartButton.GetComponent<Button>();
             bt.interactable = false;
             mainImage.GetComponent<Image>().sprite = gameClearSpr; //画像を設定する
+            black.SetActive(true);
             PlayerController.gameState = "gameend";
 
             // +++ 時間制限追加 +++
@@ -114,6 +120,7 @@ public class GameManager : MonoBehaviour
             Button bt = nextButton.GetComponent<Button>();
             bt.interactable = false;
             mainImage.GetComponent<Image>().sprite = gameOverSpr; //画像を設定する
+            black.SetActive(true); //薄暗くする
             PlayerController.gameState = "gameend";
 
             // +++ 時間制限追加 +++
@@ -163,6 +170,12 @@ public class GameManager : MonoBehaviour
                 playerCnt.score = 0;
                 UpdateScore();
             }
+
+            // +++ 残機追加 +++
+            if(playerCnt.isUpdateHeart)
+            {
+                UpdateHeart();
+            }
         }
     }
     //画像を非表示にする    
@@ -176,6 +189,16 @@ public class GameManager : MonoBehaviour
     {
         int score = stageScore + totalScore;
         scoreText.GetComponent<Text>().text = score.ToString();    
+    }
+
+    // +++ 残機追加 +++
+    void UpdateHeart()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        //PlayerControllerを取得する
+        PlayerController playerCnt = player.GetComponent<PlayerController>();
+        heartNum = playerCnt.heartNum;
+        hearttext.GetComponent<Text>().text = "x" + heartNum.ToString();
     }
 
 
