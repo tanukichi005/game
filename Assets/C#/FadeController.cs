@@ -149,5 +149,12 @@ public class FadeController : MonoBehaviour
         timer = 0.0f;
         fadeOut = false;
         compFadeOut = true;
+        
+    }
+
+    public void FlagFalse() //強制的にフラグを下げる
+    {
+        compFadeOut = false;
+        compFadeIn = false;
     }
 }

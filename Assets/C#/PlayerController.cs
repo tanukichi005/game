@@ -41,11 +41,12 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer sr = null;
 
     //残機フラグ
-        public bool isUpdateHeart = false;
+        //public bool isUpdateHeart = false;
 
     //残機取得
-    [Header("現在の残機")] public int heartNum;
-    [Header("デフォルトの残機")] public int defaultHeartNum;
+    //[Header("現在の残機")] public int heartNum;
+    //[Header("デフォルトの残機")] public int defaultHeartNum;
+
 
 
     // Start is called before the first frame update
@@ -201,7 +202,10 @@ public class PlayerController : MonoBehaviour
         }
         else if (collision.gameObject.tag == "Dead")//残機ある状態でdeadに触れる
         {
-            SubHeartNum();
+            GameObject canvas = GameObject.Find("Canvas");
+            //PlayerControllerを取得する
+            GameManager Gmana = canvas.GetComponent<GameManager>();
+            Gmana.SubHeartNum();
         }
         else if (collision.gameObject.tag == "ScoreItem")
         {
@@ -213,12 +217,12 @@ public class PlayerController : MonoBehaviour
             extendscore += score;
 
             //Extend処理
-            if(extendscore >= 10000)
-            {
-                AddHeartNum();
-                extendscore = 0;
-                isUpdateHeart = true;
-            }
+            //if(extendscore >= 10000)
+            //{
+                //AddHeartNum();
+                //extendscore = 0;
+                //isUpdateHeart = true;
+            //}
 
             //アイテムを削除する
             Destroy(collision.gameObject);
@@ -300,37 +304,49 @@ public class PlayerController : MonoBehaviour
 
      //残機関連
     /// 残機を１つ増やす
-    public void AddHeartNum()
-    {
-        if(heartNum < 99)
-        {
-            ++heartNum;
-            isUpdateHeart = true;
-        }
-    }
+    //public void AddHeartNum()
+    //{
+        //if(heartNum < 99)
+        //{
+            //++heartNum;
+            //isUpdateHeart = true;
+        //}
+    //}
      
     /// 残機を１つ減らす
-    public void SubHeartNum()
-    {
-        if(heartNum > 0)
-        {
-            --heartNum;
-            isUpdateHeart = true;
-            GameStop();
+    //public void SubHeartNum()
+    //{
+        //if(heartNum > 0)
+        //{
+            //--heartNum;
+            //isUpdateHeart = true;
+            //GameStop();
             //プレイヤー当たり判定を消す
-            GetComponent<CapsuleCollider2D>().enabled = false;
+            //GetComponent<CapsuleCollider2D>().enabled = false;
             //プレイヤーを上に少し跳ね上げる演出
-            rbody.AddForce(new Vector2(0, 5), ForceMode2D.Impulse);
-            animator.Play(deadAnime);
-            gameState = "down";
-            StartCoroutine(time());
-        }
-        else
-        {
-            GameOver(); //ゲームオーバーにする
-        }
+            //rbody.AddForce(new Vector2(0, 5), ForceMode2D.Impulse);
+            //animator.Play(deadAnime);
+            //gameState = "down";
+            //StartCoroutine(time());
+        //}
+        //else
+        //{
+            //GameOver(); //ゲームオーバーにする
+        //}
     
         
+    //}
+
+    //damage処理
+    public void Damage(){
+        GameStop();
+        //プレイヤー当たり判定を消す
+        GetComponent<CapsuleCollider2D>().enabled = false;
+        //プレイヤーを上に少し跳ね上げる演出
+        rbody.AddForce(new Vector2(0, 5), ForceMode2D.Impulse);
+        animator.Play(deadAnime);
+        gameState = "down";
+        StartCoroutine(time());
     }
 }
 

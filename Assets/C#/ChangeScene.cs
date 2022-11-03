@@ -21,6 +21,7 @@ public class ChangeScene : MonoBehaviour
         if(fade.IsFadeOutComplete())
         {
             Load();
+            fade.FlagFalse();
         }
     }
 
@@ -33,7 +34,13 @@ public class ChangeScene : MonoBehaviour
     //ロードする
     public void Load()
     {
+        Debug.Log("call");
         SceneManager.LoadScene(sceneName);
+    }
+
+    //Resetする
+    public void Reset(){
+        GameManager.instance.StartGame();
     }
 }
     
