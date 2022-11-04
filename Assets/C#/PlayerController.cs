@@ -231,8 +231,13 @@ public class PlayerController : MonoBehaviour
     //ゴール
     public void Goal()
     {
+        
+        GameObject goal = GameObject.Find("Goal");
+        //PlayerControllerを取得する
+        GoalSprite GoSp = goal.GetComponent<GoalSprite>();
+        
         animator.Play(goalAnime);
-
+        GoSp.Goaled();
         gameState = "gameclear";
         GameStop(); //GAME停止
     }

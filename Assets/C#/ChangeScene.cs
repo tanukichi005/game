@@ -9,6 +9,9 @@ public class ChangeScene : MonoBehaviour
     
     [Header("現在の残機")] public int heartNum;
 
+    public AudioClip Startsound; // スタートボタン用
+    public AudioClip Buttonsound; // ボタン用
+
     public static int hoge = 0;
     public string sceneName; //読み込むシーン名
 
@@ -35,6 +38,8 @@ public class ChangeScene : MonoBehaviour
     //フェードさせる
     public void Fade()
     {
+        AudioSource soundPlayer = GetComponent<AudioSource>();
+        soundPlayer.PlayOneShot(Buttonsound);
         fade.StartFadeOut();
     }
 
@@ -48,6 +53,8 @@ public class ChangeScene : MonoBehaviour
     //Resetする
     public void Reset()
     {
+        AudioSource soundPlayer = GetComponent<AudioSource>();
+        soundPlayer.PlayOneShot(Startsound);
         GameManager.defaultHeartNum = hoge;
         GameManager.totalScore = 0;
         fade.StartFadeOut();

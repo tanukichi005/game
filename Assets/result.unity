@@ -440,6 +440,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 4746398584625045533, guid: ec7c001823642804c94ff38e12902836, type: 3}
+      propertyPath: sceneName
+      value: newTitle
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec7c001823642804c94ff38e12902836, type: 3}
 --- !u!114 &4746398583194412481 stripped

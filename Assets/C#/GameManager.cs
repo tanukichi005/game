@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
     // +++ サウンド追加 +++
     public AudioClip meGameOver; //ゲームオーバー
     public AudioClip meGameClear; // ゲームクリア
+    public AudioClip meGet; // アイテム取得
     // Start is called before the first frame update
 
     // +++ 残機追加 +++
@@ -143,6 +144,7 @@ public class GameManager : MonoBehaviour
         }
         else if (PlayerController.gameState == "gameover")
         {
+            
             //ゲームオーバー
             mainImage.SetActive(true); //画像を表示する
             Reset.SetActive(true); //endボタン(パネル)を表示する
@@ -262,6 +264,13 @@ public class GameManager : MonoBehaviour
             --heartNum;
             defaultHeartNum = heartNum;
             UpdateHeart();
+            AudioSource soundPlayer = GetComponent<AudioSource>();
+            if (soundPlayer != null)
+            {
+                //BGM停止
+                soundPlayer.Stop();
+                soundPlayer.PlayOneShot(meGameOver);
+            }
             playerCnt.Damage();
             
         }
