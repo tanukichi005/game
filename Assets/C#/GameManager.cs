@@ -34,7 +34,6 @@ public class GameManager : MonoBehaviour
     // +++ サウンド追加 +++
     public AudioClip meGameOver; //ゲームオーバー
     public AudioClip meGameClear; // ゲームクリア
-    public AudioClip meGet; // アイテム取得
     // Start is called before the first frame update
 
     // +++ 残機追加 +++
@@ -111,7 +110,7 @@ public class GameManager : MonoBehaviour
             //bt.interactable = false;
             mainImage.GetComponent<Image>().sprite = gameClearSpr; //画像を設定する
             black.SetActive(true);
-            //PlayerController.gameState = "gameend";
+            PlayerController.gameState = "gameend";
 
             // +++ 時間制限追加 +++
             if (timeCnt != null && scoreflag)
@@ -170,6 +169,13 @@ public class GameManager : MonoBehaviour
                 soundPlayer.Stop();
                 soundPlayer.PlayOneShot(meGameOver);
             }
+             // +++ スコア追加 +++
+            totalScore += stageScore;
+            finalscore = totalScore;
+            stageScore = 0;
+
+            UpdateScore();// スコア更新
+            
         }
         else if (PlayerController.gameState == "playing")
         {
@@ -268,7 +274,6 @@ public class GameManager : MonoBehaviour
             if (soundPlayer != null)
             {
                 //BGM停止
-                soundPlayer.Stop();
                 soundPlayer.PlayOneShot(meGameOver);
             }
             playerCnt.Damage();

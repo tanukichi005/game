@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     float axisH = 0.0f; //入力
     public float speed = 3.0f; //移動速度
 
-    public float jump = 4.5f; //ジャンプ力
+    public float jump = 9.0f; //ジャンプ力
     public LayerMask groundLayer; //着地できるレイヤー
     bool goJump = false; //ジャンプ開始フラグ
     bool onGround = false; //地面に立っているフラグ
@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
     //[Header("現在の残機")] public int heartNum;
     //[Header("デフォルトの残機")] public int defaultHeartNum;
 
-
+    public AudioClip meGet; // アイテム取得
 
     // Start is called before the first frame update
     void Start()
@@ -74,6 +74,7 @@ public class PlayerController : MonoBehaviour
 
         //水平方向の入力を確認する
         axisH = Input.GetAxisRaw("Horizontal");
+        //axisH = Input.GetAxisRaw("D_Pad_H");
         //向きの調整
         if (axisH > 0.0f)
         {
@@ -216,6 +217,8 @@ public class PlayerController : MonoBehaviour
             score = item.value;
             extendscore += score;
 
+            AudioSource soundPlayer = GetComponent<AudioSource>();
+            soundPlayer.PlayOneShot(meGet);
             //Extend処理
             //if(extendscore >= 10000)
             //{
@@ -252,7 +255,7 @@ public class PlayerController : MonoBehaviour
         //ゲームオーバー演出
         //===================
         //プレイヤー当たり判定を消す
-        GetComponent<CapsuleCollider2D>().enabled = false;
+        GetComponent<BoxCollider2D>().enabled = false;
         //プレイヤーを上に少し跳ね上げる演出
         rbody.AddForce(new Vector2(0, 5), ForceMode2D.Impulse);
     }
@@ -301,7 +304,7 @@ public class PlayerController : MonoBehaviour
     {
         isDown = false;
         nowAnime = stopAnime;
-        GetComponent<CapsuleCollider2D>().enabled = true;
+        GetComponent<BoxCollider2D>().enabled = true;
         isContinue = true;
         gameState = "playing";
     }
@@ -346,7 +349,7 @@ public class PlayerController : MonoBehaviour
     public void Damage(){
         GameStop();
         //プレイヤー当たり判定を消す
-        GetComponent<CapsuleCollider2D>().enabled = false;
+        GetComponent<BoxCollider2D>().enabled = false;
         //プレイヤーを上に少し跳ね上げる演出
         rbody.AddForce(new Vector2(0, 5), ForceMode2D.Impulse);
         animator.Play(deadAnime);

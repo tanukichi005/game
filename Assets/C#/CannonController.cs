@@ -10,6 +10,8 @@ public class CannonController : MonoBehaviour
     public float fireSpeedY = 0.0f; //発射ベクトルY
     public float length = 8.0f;
 
+    public AudioClip fire; //発射音
+
     GameObject player; //プレイヤー
     GameObject gateObj; //発射口
     float passedTimes = 0; //経過時間
@@ -35,6 +37,8 @@ public class CannonController : MonoBehaviour
             if (passedTimes > delayTime)
             {
                 //発射
+                AudioSource soundPlayer = GetComponent<AudioSource>();
+                soundPlayer.PlayOneShot(fire);
                 passedTimes = 0;
                 //発射位置
                 Vector3 pos = new Vector3(gateObj.transform.position.x,gateObj.transform.position.y,transform.position.z);
