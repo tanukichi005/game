@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     public static int totalScore; //合計スコア
     public int stageScore = 0; //ステージスコア
     public bool scoreflag = true; //スコアフラグ
+    public static int finalscore; //表示用スコア
 
     // +++ サウンド追加 +++
     public AudioClip meGameOver; //ゲームオーバー
@@ -66,6 +67,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+
         //画像を非表示にする
         Invoke("InactiveImage",1.0f);
         //ボタン(パネル)を非表示にする
@@ -106,8 +108,8 @@ public class GameManager : MonoBehaviour
             //RESTARTボタンを無効化する
             //Button bt = restartButton.GetComponent<Button>();
             //bt.interactable = false;
-            //mainImage.GetComponent<Image>().sprite = gameClearSpr; //画像を設定する
-            //black.SetActive(true);
+            mainImage.GetComponent<Image>().sprite = gameClearSpr; //画像を設定する
+            black.SetActive(true);
             //PlayerController.gameState = "gameend";
 
             // +++ 時間制限追加 +++
@@ -124,7 +126,7 @@ public class GameManager : MonoBehaviour
 
             // +++ スコア追加 +++
             totalScore += stageScore;
-          
+            finalscore = totalScore;
             stageScore = 0;
 
             UpdateScore();// スコア更新
@@ -147,8 +149,8 @@ public class GameManager : MonoBehaviour
             //Nextボタンを無効化する
            //Button bt = nextButton.GetComponent<Button>();
             //bt.interactable = false;
-            //mainImage.GetComponent<Image>().sprite = gameOverSpr; //画像を設定する
-            //black.SetActive(true); //薄暗くする
+            mainImage.GetComponent<Image>().sprite = gameOverSpr; //画像を設定する
+            black.SetActive(true); //薄暗くする
             PlayerController.gameState = "gameend";
 
             // +++ 時間制限追加 +++
@@ -226,7 +228,8 @@ public class GameManager : MonoBehaviour
     void UpdateScore()
     {
         int score = stageScore + totalScore;
-        scoreText.GetComponent<Text>().text = score.ToString();    
+        finalscore = score;
+        scoreText.GetComponent<Text>().text = finalscore.ToString();    
     }
 
     // +++ 残機追加 +++
@@ -275,8 +278,7 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
 	{
-	
-        defaultHeartNum = 0;
+        defaultHeartNum = ChangeScene.hoge;
 		totalScore = 0;
 	}
 

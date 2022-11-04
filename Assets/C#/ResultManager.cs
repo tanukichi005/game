@@ -9,7 +9,7 @@ public class ResultManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        scoreText.GetComponent<Text>().text = GameManager.totalScore.ToString();
+        scoreText.GetComponent<Text>().text = GameManager.finalscore.ToString();
     }
 
     // Update is called once per frame

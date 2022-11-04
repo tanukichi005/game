@@ -1539,6 +1539,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2209850064251399249, guid: 539abcee3700c1a4ab5c452193c3af1d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Fade
+      objectReference: {fileID: 0}
     - target: {fileID: 3181565648338801364, guid: 539abcee3700c1a4ab5c452193c3af1d, type: 3}
       propertyPath: sceneName
       value: result
