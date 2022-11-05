@@ -700,6 +700,7 @@ MonoBehaviour:
   scoreflag: 1
   meGameOver: {fileID: 8300000, guid: 1970f4998a9b5744e87b14e09561c69a, type: 3}
   meGameClear: {fileID: 8300000, guid: e965aa2516c69f24c9ae14b0b01999aa, type: 3}
+  extend: {fileID: 8300000, guid: df3e3764f4ef82049a3aeaf35a9a17f7, type: 3}
   hearttext: {fileID: 1884592645917325057}
   extendscore: 0
   stageNum: 0

@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
     // +++ サウンド追加 +++
     public AudioClip meGameOver; //ゲームオーバー
     public AudioClip meGameClear; // ゲームクリア
+    public AudioClip extend; // extend
     // Start is called before the first frame update
 
     // +++ 残機追加 +++
@@ -213,6 +214,8 @@ public class GameManager : MonoBehaviour
                 if(extendscore >= 10000)
                 {
                     Debug.Log("extend");
+                    AudioSource soundPlayer = GetComponent<AudioSource>();
+                    soundPlayer.PlayOneShot(extend);
                     AddHeartNum();
                     extendscore -= 10000;
                     UpdateHeart();
@@ -281,6 +284,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            extendscore = 0; //ゼロ処理回避
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             //PlayerControllerを取得する
             PlayerController playerCnt = player.GetComponent<PlayerController>();
