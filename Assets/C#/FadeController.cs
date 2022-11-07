@@ -14,6 +14,8 @@ public class FadeController : MonoBehaviour
     private bool fadeOut = false;
     private bool compFadeIn = false;
     private bool compFadeOut = false;
+    private bool nowFadeOut = false;
+    private bool nowFadeIn = false;
 
     /// <summary>
     /// フェードインを開始する
@@ -31,6 +33,7 @@ public class FadeController : MonoBehaviour
         img.color = new Color(1, 1, 1, 1);
         img.fillAmount = 1;
         img.raycastTarget = true;
+        nowFadeIn = true;
     }
 
     /// <summary>
@@ -40,6 +43,12 @@ public class FadeController : MonoBehaviour
     public bool IsFadeInComplete()
     {
         return compFadeIn;
+    }
+
+    //フェードイン中かどうか
+    public bool IsFadeInNow()
+    {
+        return nowFadeIn;
     }
 
     /// <summary>
@@ -58,6 +67,7 @@ public class FadeController : MonoBehaviour
         img.color = new Color(1, 1, 1, 0);
         img.fillAmount = 0;
         img.raycastTarget = true;
+        nowFadeOut = true;
     }
 
     /// <summary>
@@ -69,6 +79,11 @@ public class FadeController : MonoBehaviour
         return compFadeOut;
     }
 
+    //フェードアウト中かどうか
+    public bool IsFadeOutNow()
+    {
+        return nowFadeOut;
+    }
     void Start()
     {
         img = GetComponent<Image>();
@@ -138,6 +153,7 @@ public class FadeController : MonoBehaviour
         timer = 0.0f;
         fadeIn = false;
         compFadeIn = true;
+        nowFadeIn = false;
     }
 
     //フェードアウト完了
@@ -149,7 +165,7 @@ public class FadeController : MonoBehaviour
         timer = 0.0f;
         fadeOut = false;
         compFadeOut = true;
-        
+        nowFadeOut = false;
     }
 
     public void FlagFalse() //強制的にフラグを下げる

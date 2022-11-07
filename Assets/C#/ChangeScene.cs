@@ -53,11 +53,15 @@ public class ChangeScene : MonoBehaviour
     //Resetする
     public void Reset()
     {
-        AudioSource soundPlayer = GetComponent<AudioSource>();
-        soundPlayer.PlayOneShot(Startsound);
-        GameManager.defaultHeartNum = hoge;
-        GameManager.totalScore = 0;
-        fade.StartFadeOut();
+        if(fade.IsFadeInComplete() && !fade.IsFadeOutNow())
+        {
+            AudioSource soundPlayer = GetComponent<AudioSource>();
+            soundPlayer.PlayOneShot(Startsound);
+            GameManager.defaultHeartNum = hoge;
+            GameManager.totalScore = 0;
+            fade.StartFadeOut();
+        }
+        
     }
 }
     
